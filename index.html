@@ -166,7 +166,9 @@
             { name: 'Muinakas', country: 'Uzbekistano', continent: 'Azija', coords: [43.7667, 59.0333], isCapital: false, isSpecial: true, description: "garsėja kaip 'laivų kapinės'" },
             { name: 'Aralskas', country: 'Kazachstano', continent: 'Azija', coords: [46.7833, 61.6667], isCapital: false, isSpecial: true, description: 'esminis ekologinės katastrofos pavyzdys' },
             { name: 'Fukušima', country: 'Japonijos', continent: 'Azija', coords: [37.4214, 141.0329], isCapital: false, isSpecial: true, description: 'branduolinės avarijos po cunamio pavyzdys' },
-
+            { name: 'Daka', country: 'Bangladešo', continent: 'Azija', coords: [23.8103, 90.4125], isCapital: true, isSpecial: true, description: 'daugiau nei 20 mln gyventojų' },
+            { name: 'Jerichas', country: 'Vakarų Kranto', continent: 'Azija', coords: [31.8569, 35.4529], isCapital: false, isSpecial: true, description: 'tai vienas seniausių pasaulio miestų' },
+            
             // Šiaurės Amerika
             { name: 'Vašingtonas', country: 'JAV', continent: 'Šiaurės Amerika', coords: [38.9072, -77.0369], isCapital: true },
             { name: 'Meksikas', country: 'Meksikos', continent: 'Šiaurės Amerika', coords: [19.4326, -99.1332], isCapital: true },
@@ -202,6 +204,9 @@
             { name: 'Johanesburgas', country: 'Pietų Afrikos Respublikos', continent: 'Afrika', coords: [-26.2041, 28.0473], isCapital: false },
             { name: 'Kibera', country: 'Kenijos', continent: 'Afrika', coords: [-1.3129, 36.7905], isCapital: false, isSpecial: true, description: 'vienas didžiausių Afrikos lušnynų' },
             { name: 'Sahelio zona', country: 'Afrikos', continent: 'Afrika', coords: [17.6078, 8.0817], isCapital: false, isSpecial: true, description: 'dykumėjimo ir klimato kaitos poveikio regionas' },
+            { name: 'Kinšasa', country: 'Kongo Demokratinės Respublikos', continent: 'Afrika', coords: [-4.4419, 15.2663], isCapital: true, isSpecial: true, description: 'vienas sparčiausiai augančių megamiestų pasaulyje' },
+            { name: 'Aleksandrija', country: 'Egipto', continent: 'Afrika', coords: [31.2001, 29.9187], isCapital: false, isSpecial: true, description: 'Antrasis pagal gyventojų skaičių ir ekonominę reikšmę istorinis Egipto miestas' },
+            { name: 'Abudža', country: 'Nigerijos', continent: 'Afrika', coords: [9.0765, 7.3986], isCapital: true, isSpecial: true, description: 'Vienas sparčiausiai augančių miestų ne tik Afrikoje, bet ir visame pasaulyje' },
 
             // Australija ir Okeanija
             { name: 'Kanbera', country: 'Australijos', continent: 'Australija ir Okeanija', coords: [-35.2809, 149.1300], isCapital: true },
@@ -214,6 +219,7 @@
         ];
 
         const continentLayers = {
+            "Lietuvos miestai": L.layerGroup(),
             "Europos miestai": L.layerGroup(),
             "Azijos miestai": L.layerGroup(),
             "Šiaurės Amerikos miestai": L.layerGroup(),
@@ -238,10 +244,17 @@
 
             if (loc.isSpecial) {
                 let status = loc.isCapital ? 'sostinė' : 'miestas/regionas';
-                 popupText = `<b>${loc.name}</b><br>(${loc.country} ${status})<br>- ${loc.description} -`;
+                popupText = `<b>${loc.name}</b><br>(${loc.country} ${status})<br>- ${loc.description} -`;
                 marker = L.marker(loc.coords, { icon: redIcon }).bindPopup(popupText);
                 continentLayers["Verta žinoti"].addLayer(marker);
 
+            } else if (loc.country === 'Lietuvos') {
+                popupText = loc.isCapital 
+                    ? `<b>${loc.name}</b><br>(${loc.country} sostinė)` 
+                    : `<b>${loc.name}</b><br>(${loc.country} miestas)`;
+                marker = L.marker(loc.coords).bindPopup(popupText);
+                continentLayers["Lietuvos miestai"].addLayer(marker);
+                
             } else {
                  popupText = loc.isCapital 
                     ? `<b>${loc.name}</b><br>(${loc.country} sostinė)` 
@@ -265,7 +278,7 @@
         const controlContainer = layerControl.getContainer();
         const titleElement = document.createElement('div');
         titleElement.className = 'leaflet-control-layers-group-name';
-        titleElement.innerText = 'Ką mokytis?';
+        titleElement.innerText = 'Ką mokintis?';
         controlContainer.prepend(titleElement);
 
     </script>
