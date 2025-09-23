@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interaktyvus Pasaulio Žemėlapis</title>
+    <!-- Leaflet.js CSS ir JS iš CDN -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha26-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha26-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <style>
+        /* Užtikriname, kad žemėlapis užpildytų visą jam skirtą erdvę */
+        #map {
+            width: 100%;
+            height: 100vh;
+            border: none;
+        }
+        body {
+            padding: 0;
+            margin: 0;
+        }
+        .leaflet-control-layers {
+            border-radius: 5px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+        }
+        /* Stilius valdymo skydelio pavadinimui */
+        .leaflet-control-layers-group-name {
+            font-weight: bold;
+            margin-bottom: .5em;
+            margin-left: 5px;
+            font-size: 14px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Žemėlapio konteineris -->
+    <div id="map"></div>
+
+    <script>
+        // Inicializuojame žemėlapį
+        const map = L.map('map').setView([50, 20], 4); // Centruojame į Europą
+
+        // Pridedame žemėlapio pagrindą be pavadinimų
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+        }).addTo(map);
+
+        // Sukuriame atskirą sritį (pane) valstybių sluoksniui, kad jis būtų viršuje
+        map.createPane('highlightPane');
+        map.getPane('highlightPane').style.zIndex = 450; // Nustatome aukštesnį z-index
+
+
+        // --- MIESTŲ ŽYMĖS ---
+        const locations = [
+            // Europa (visos sostinės ir papildomi miestai)
+            { name: 'Amsterdamas', country: 'Nyderlandų', continent: 'Europa', coords: [52.3676, 4.9041], isCapital: true },
+            { name: 'Andora la Velja', country: 'Andoros', continent: 'Europa', coords: [42.5063, 1.5218], isCapital: true },
+            { name: 'Atėnai', country: 'Graikijos', continent: 'Europa', coords: [37.9838, 23.7275], isCapital: true },
+            { name: 'Belgradas', country: 'Serbijos', continent: 'Europa', coords: [44.7866, 20.4489], isCapital: true },
+            { name: 'Berlynas', country: 'Vokietijos', continent: 'Europa', coords: [52.5200, 13.4050], isCapital: true },
+            { name: 'Bernas', country: 'Šveicarijos', continent: 'Europa', coords: [46.9480, 7.4474], isCapital: true },
+            { name: 'Bratislava', country: 'Slovakijos', continent: 'Europa', coords: [48.1486, 17.1077], isCapital: true },
+            { name: 'Briuselis', country: 'Belgijos', continent: 'Europa', coords: [50.8503, 4.3517], isCapital: true },
+            { name: 'Bukareštas', country: 'Rumunijos', continent: 'Europa', coords: [44.4268, 26.1025], isCapital: true },
+            { name: 'Budapeštas', country: 'Vengrijos', continent: 'Europa', coords: [47.4979, 19.0402], isCapital: true },
+            { name: 'Kišiniovas', country: 'Moldovos', continent: 'Europa', coords: [47.0105, 28.8638], isCapital: true },
+            { name: 'Kopenhaga', country: 'Danijos', continent: 'Europa', coords: [55.6761, 12.5683], isCapital: true },
+            { name: 'Dublinas', country: 'Airijos', continent: 'Europa', coords: [53.3498, -6.2603], isCapital: true },
+            { name: 'Helsinkis', country: 'Suomijos', continent: 'Europa', coords: [60.1699, 24.9384], isCapital: true },
+            { name: 'Kijevas', country: 'Ukrainos', continent: 'Europa', coords: [50.4501, 30.5234], isCapital: true },
+            { name: 'Lisabona', country: 'Portugalijos', continent: 'Europa', coords: [38.7223, -9.1393], isCapital: true },
+            { name: 'Liubliana', country: 'Slovėnijos', continent: 'Europa', coords: [46.0569, 14.5058], isCapital: true },
+            { name: 'Londonas', country: 'Jungtinės Karalystės', continent: 'Europa', coords: [51.5074, -0.1278], isCapital: true },
+            { name: 'Liuksemburgas', country: 'Liuksemburgo', continent: 'Europa', coords: [49.6116, 6.1319], isCapital: true },
+            { name: 'Madridas', country: 'Ispanijos', continent: 'Europa', coords: [40.4168, -3.7038], isCapital: true },
+            { name: 'Minskas', country: 'Baltarusijos', continent: 'Europa', coords: [53.9045, 27.5615], isCapital: true },
+            { name: 'Monakas', country: 'Monako', continent: 'Europa', coords: [43.7384, 7.4246], isCapital: true },
+            { name: 'Maskva', country: 'Rusijos', continent: 'Europa', coords: [55.7558, 37.6173], isCapital: true },
+            { name: 'Nikosija', country: 'Kipro', continent: 'Europa', coords: [35.1856, 33.3823], isCapital: true },
+            { name: 'Oslas', country: 'Norvegijos', continent: 'Europa', coords: [59.9139, 10.7522], isCapital: true },
+            { name: 'Paryžius', country: 'Prancūzijos', continent: 'Europa', coords: [48.8566, 2.3522], isCapital: true },
+            { name: 'Podgorica', country: 'Juodkalnijos', continent: 'Europa', coords: [42.4304, 19.2594], isCapital: true },
+            { name: 'Praha', country: 'Čekijos', continent: 'Europa', coords: [50.0755, 14.4378], isCapital: true },
+            { name: 'Reikjavikas', country: 'Islandijos', continent: 'Europa', coords: [64.1466, -21.9426], isCapital: true },
+            { name: 'Ryga', country: 'Latvijos', continent: 'Europa', coords: [56.9496, 24.1052], isCapital: true },
+            { name: 'Roma', country: 'Italijos', continent: 'Europa', coords: [41.9028, 12.4964], isCapital: true },
+            { name: 'San Marinas', country: 'San Marino', continent: 'Europa', coords: [43.9424, 12.4578], isCapital: true },
+            { name: 'Sarajevas', country: 'Bosnijos ir Hercegovinos', continent: 'Europa', coords: [43.8563, 18.4131], isCapital: true },
+            { name: 'Skopjė', country: 'Šiaurės Makedonijos', continent: 'Europa', coords: [41.9981, 21.4254], isCapital: true },
+            { name: 'Sofija', country: 'Bulgarijos', continent: 'Europa', coords: [42.6977, 23.3219], isCapital: true },
+            { name: 'Stokholmas', country: 'Švedijos', continent: 'Europa', coords: [59.3293, 18.0686], isCapital: true },
+            { name: 'Talinas', country: 'Estijos', continent: 'Europa', coords: [59.4370, 24.7536], isCapital: true },
+            { name: 'Tirana', country: 'Albanijos', continent: 'Europa', coords: [41.3275, 19.8187], isCapital: true },
+            { name: 'Valeta', country: 'Maltos', continent: 'Europa', coords: [35.8989, 14.5146], isCapital: true },
+            { name: 'Viena', country: 'Austrijos', continent: 'Europa', coords: [48.2082, 16.3738], isCapital: true },
+            { name: 'Vilnius', country: 'Lietuvos', continent: 'Europa', coords: [54.6872, 25.2797], isCapital: true },
+            { name: 'Varšuva', country: 'Lenkijos', continent: 'Europa', coords: [52.2297, 21.0122], isCapital: true },
+            { name: 'Zagrebas', country: 'Kroatijos', continent: 'Europa', coords: [45.8150, 15.9819], isCapital: true },
+            { name: 'Tbilisis', country: 'Gruzijos', continent: 'Europa', coords: [41.7151, 44.8271], isCapital: true },
+            { name: 'Kaunas', country: 'Lietuvos', continent: 'Europa', coords: [54.8985, 23.9036], isCapital: false },
+            { name: 'Klaipėda', country: 'Lietuvos', continent: 'Europa', coords: [55.7033, 21.1443], isCapital: false },
+            { name: 'Šiauliai', country: 'Lietuvos', continent: 'Europa', coords: [55.9324, 23.3158], isCapital: false },
+            { name: 'Panevėžys', country: 'Lietuvos', continent: 'Europa', coords: [55.7336, 24.3583], isCapital: false },
+            { name: 'Alytus', country: 'Lietuvos', continent: 'Europa', coords: [54.3946, 24.0487], isCapital: false },
+            { name: 'Sankt Peterburgas', country: 'Rusijos', continent: 'Europa', coords: [59.9343, 30.3351], isCapital: false },
+            { name: 'Strasbūras', country: 'Prancūzijos', continent: 'Europa', coords: [48.5734, 7.7521], isCapital: false },
+            { name: 'Barselona', country: 'Ispanijos', continent: 'Europa', coords: [41.3851, 2.1734], isCapital: false },
+            { name: 'Venecija', country: 'Italijos', continent: 'Europa', coords: [45.4408, 12.3155], isCapital: false },
+            { name: 'Neapolis', country: 'Italijos', continent: 'Europa', coords: [40.8518, 14.2681], isCapital: false },
+            { name: 'Frankfurtas prie Maino', country: 'Vokietijos', continent: 'Europa', coords: [50.1109, 8.6821], isCapital: false },
+            { name: 'Hamburgas', country: 'Vokietijos', continent: 'Europa', coords: [53.5511, 9.9937], isCapital: false },
+            { name: 'Krokuva', country: 'Lenkijos', continent: 'Europa', coords: [50.0647, 19.9450], isCapital: false },
+            { name: 'Stambulas', country: 'Turkijos', continent: 'Europa', coords: [41.0082, 28.9784], isCapital: false },
+            
+            // Azija
+            { name: 'Pekinas', country: 'Kinijos', continent: 'Azija', coords: [39.9042, 116.4074], isCapital: true },
+            { name: 'Delis', country: 'Indijos', continent: 'Azija', coords: [28.7041, 77.1025], isCapital: true },
+            { name: 'Nursultanas', country: 'Kazachstano', continent: 'Azija', coords: [51.1694, 71.4491], isCapital: true },
+            { name: 'Džakarta', country: 'Indonezijos', continent: 'Azija', coords: [-6.2088, 106.8456], isCapital: true },
+            { name: 'Tokijas', country: 'Japonijos', continent: 'Azija', coords: [35.6895, 139.6917], isCapital: true },
+            { name: 'Ankara', country: 'Turkijos', continent: 'Azija', coords: [39.9334, 32.8597], isCapital: true },
+            { name: 'Bankokas', country: 'Tailando', continent: 'Azija', coords: [13.7563, 100.5018], isCapital: true },
+            { name: 'Rijadas', country: 'Saudo Arabijos', continent: 'Azija', coords: [24.7136, 46.6753], isCapital: true },
+            { name: 'Teheranas', country: 'Irano', continent: 'Azija', coords: [35.6892, 51.3890], isCapital: true },
+            { name: 'Bagdadas', country: 'Irako', continent: 'Azija', coords: [33.3152, 44.3661], isCapital: true },
+            { name: 'Jeruzalė', country: 'Izraelio', continent: 'Azija', coords: [31.7683, 35.2137], isCapital: true },
+            { name: 'Abu Dabis', country: 'Jungtinių Arabų Emyratų', continent: 'Azija', coords: [24.4539, 54.3773], isCapital: true },
+            { name: 'Damaskas', country: 'Sirijos', continent: 'Azija', coords: [33.5138, 36.2765], isCapital: true },
+            { name: 'Amanas', country: 'Jordanijos', continent: 'Azija', coords: [31.9632, 35.9304], isCapital: true },
+            { name: 'Beirutas', country: 'Libano', continent: 'Azija', coords: [33.8938, 35.5018], isCapital: true },
+            { name: 'Doha', country: 'Kataro', continent: 'Azija', coords: [25.2854, 51.5310], isCapital: true },
+            { name: 'Kuveitas', country: 'Kuveito', continent: 'Azija', coords: [29.3759, 47.9774], isCapital: true },
+            { name: 'Maskatas', country: 'Omano', continent: 'Azija', coords: [23.5889, 58.3842], isCapital: true },
+            { name: 'Kabulas', country: 'Afganistano', continent: 'Azija', coords: [34.5553, 69.2075], isCapital: true },
+            { name: 'Kvala Lumpūras', country: 'Malaizijos', continent: 'Azija', coords: [3.1390, 101.6869], isCapital: true },
+            { name: 'Ulan Batoras', country: 'Mongolijos', continent: 'Azija', coords: [47.9186, 106.9177], isCapital: true },
+            { name: 'Katmandu', country: 'Nepalo', continent: 'Azija', coords: [27.7172, 85.3240], isCapital: true },
+            { name: 'Pchenjanas', country: 'Šiaurės Korėjos', continent: 'Azija', coords: [39.0392, 125.7625], isCapital: true },
+            { name: 'Islamabadas', country: 'Pakistano', continent: 'Azija', coords: [33.6844, 73.0479], isCapital: true },
+            { name: 'Manila', country: 'Filipinų', continent: 'Azija', coords: [14.5995, 120.9842], isCapital: true },
+            { name: 'Singapūras', country: 'Singapūro', continent: 'Azija', coords: [1.3521, 103.8198], isCapital: true },
+            { name: 'Seulas', country: 'Pietų Korėjos', continent: 'Azija', coords: [37.5665, 126.9780], isCapital: true },
+            { name: 'Kolombas', country: 'Šri Lankos', continent: 'Azija', coords: [6.9271, 79.8612], isCapital: true },
+            { name: 'Hanojus', country: 'Vietnamo', continent: 'Azija', coords: [21.0285, 105.8542], isCapital: true },
+            { name: 'Sana', country: 'Jemeno', continent: 'Azija', coords: [15.3694, 44.1910], isCapital: true },
+            { name: 'Šanchajus', country: 'Kinijos', continent: 'Azija', coords: [31.2304, 121.4737], isCapital: false },
+            { name: 'Honkongas', country: 'Kinijos', continent: 'Azija', coords: [22.3193, 114.1694], isCapital: false },
+            { name: 'Mumbajus', country: 'Indijos', continent: 'Azija', coords: [19.0760, 72.8777], isCapital: false },
+            { name: 'Dubajus', country: 'Jungtinių Arabų Emyratų', continent: 'Azija', coords: [25.276987, 55.296249], isCapital: false },
+            { name: 'Tel Avivas', country: 'Izraelio', continent: 'Azija', coords: [32.0853, 34.7818], isCapital: false },
+
+            // Šiaurės Amerika
+            { name: 'Vašingtonas', country: 'JAV', continent: 'Šiaurės Amerika', coords: [38.9072, -77.0369], isCapital: true },
+            { name: 'Meksikas', country: 'Meksikos', continent: 'Šiaurės Amerika', coords: [19.4326, -99.1332], isCapital: true },
+            { name: 'Havana', country: 'Kubos', continent: 'Šiaurės Amerika', coords: [23.1136, -82.3666], isCapital: true },
+            { name: 'Port o Prensas', country: 'Haičio', continent: 'Šiaurės Amerika', coords: [18.5944, -72.3074], isCapital: true },
+            { name: 'Panama', country: 'Panamos', continent: 'Šiaurės Amerika', coords: [8.9824, -79.5199], isCapital: true },
+            { name: 'Torontas', country: 'Kanados', continent: 'Šiaurės Amerika', coords: [43.6532, -79.3832], isCapital: false },
+            { name: 'Niujorkas', country: 'JAV', continent: 'Šiaurės Amerika', coords: [40.7128, -74.0060], isCapital: false },
+            { name: 'Čikaga', country: 'JAV', continent: 'Šiaurės Amerika', coords: [41.8781, -87.6298], isCapital: false },
+            { name: 'San Fransiskas', country: 'JAV', continent: 'Šiaurės Amerika', coords: [37.7749, -122.4194], isCapital: false },
+            { name: 'Los Andželas', country: 'JAV', continent: 'Šiaurės Amerika', coords: [34.0522, -118.2437], isCapital: false },
+
+            // Pietų Amerika
+            { name: 'Brazilija', country: 'Brazilijos', continent: 'Pietų Amerika', coords: [-15.8267, -47.9218], isCapital: true },
+            { name: 'Buenos Airės', country: 'Argentinos', continent: 'Pietų Amerika', coords: [-34.6037, -58.3816], isCapital: true },
+            { name: 'Lima', country: 'Peru', continent: 'Pietų Amerika', coords: [-12.0464, -77.0428], isCapital: true },
+            { name: 'Bogota', country: 'Kolumbijos', continent: 'Pietų Amerika', coords: [4.7110, -74.0721], isCapital: true },
+            { name: 'Santjagas', country: 'Čilės', continent: 'Pietų Amerika', coords: [-33.4489, -70.6693], isCapital: true },
+            { name: 'Karakasas', country: 'Venesuelos', continent: 'Pietų Amerika', coords: [10.4806, -66.9036], isCapital: true },
+            { name: 'Rio de Žaneiras', country: 'Brazilijos', continent: 'Pietų Amerika', coords: [-22.9068, -43.1729], isCapital: false },
+            { name: 'San Paulas', country: 'Brazilijos', continent: 'Pietų Amerika', coords: [-23.5505, -46.6333], isCapital: false },
+
+            // Afrika
+            { name: 'Kairas', country: 'Egipto', continent: 'Afrika', coords: [30.0444, 31.2357], isCapital: true },
+            { name: 'Alžyras', country: 'Alžyro', continent: 'Afrika', coords: [36.7754, 3.0601], isCapital: true },
+            { name: 'Ndžamena', country: 'Čado', continent: 'Afrika', coords: [12.1348, 15.0557], isCapital: true },
+            { name: 'Kinšasa', country: 'Kongo Demokratinės Respublikos', continent: 'Afrika', coords: [-4.4419, 15.2663], isCapital: true },
+            { name: 'Adis Abeba', country: 'Etiopijos', continent: 'Afrika', coords: [9.0249, 38.7469], isCapital: true },
+            { name: 'Nairobis', country: 'Kenijos', continent: 'Afrika', coords: [-1.2921, 36.8219], isCapital: true },
+            { name: 'Tripolis', country: 'Libijos', continent: 'Afrika', coords: [32.8872, 13.1913], isCapital: true },
+            { name: 'Antananaryvas', country: 'Madagaskaro', continent: 'Afrika', coords: [-18.8792, 47.5079], isCapital: true },
+            { name: 'Rabatas', country: 'Maroko', continent: 'Afrika', coords: [34.0209, -6.8417], isCapital: true },
+            { name: 'Mogadišas', country: 'Somalio', continent: 'Afrika', coords: [2.0469, 45.3182], isCapital: true },
+            { name: 'Džuba', country: 'Pietų Sudano', continent: 'Afrika', coords: [4.8594, 31.5713], isCapital: true },
+            { name: 'Tunisas', country: 'Tuniso', continent: 'Afrika', coords: [36.8065, 10.1815], isCapital: true },
+            { name: 'Lagosas', country: 'Nigerijos', continent: 'Afrika', coords: [6.5244, 3.3792], isCapital: false },
+            { name: 'Keiptaunas', country: 'Pietų Afrikos Respublikos', continent: 'Afrika', coords: [-33.9249, 18.4241], isCapital: true },
+            { name: 'Johanesburgas', country: 'Pietų Afrikos Respublikos', continent: 'Afrika', coords: [-26.2041, 28.0473], isCapital: false },
+
+            // Australija ir Okeanija
+            { name: 'Kanbera', country: 'Australijos', continent: 'Australija ir Okeanija', coords: [-35.2809, 149.1300], isCapital: true },
+            { name: 'Velingtonas', country: 'Naujosios Zelandijos', continent: 'Australija ir Okeanija', coords: [-41.2865, 174.7762], isCapital: true },
+            { name: 'Sidnėjus', country: 'Australijos', continent: 'Australija ir Okeanija', coords: [-33.8688, 151.2093], isCapital: false },
+            { name: 'Melburnas', country: 'Australijos', continent: 'Australija ir Okeanija', coords: [-37.8136, 144.9631], isCapital: false }
+        ];
+
+        const continentLayers = {
+            "Europos miestai": L.layerGroup(),
+            "Azijos miestai": L.layerGroup(),
+            "Šiaurės Amerikos miestai": L.layerGroup(),
+            "Pietų Amerikos miestai": L.layerGroup(),
+            "Afrikos miestai": L.layerGroup(),
+            "Australijos miestai": L.layerGroup()
+        };
+        
+        const continentMapping = {
+            'Europa': 'Europos miestai',
+            'Azija': 'Azijos miestai',
+            'Šiaurės Amerika': 'Šiaurės Amerikos miestai',
+            'Pietų Amerika': 'Pietų Amerikos miestai',
+            'Afrika': 'Afrikos miestai',
+            'Australija ir Okeanija': 'Australijos miestai'
+        };
+
+        locations.forEach(loc => {
+            const layerName = continentMapping[loc.continent];
+            if (layerName) {
+                const popupText = loc.isCapital 
+                    ? `<b>${loc.name}</b><br>(${loc.country} sostinė)` 
+                    : `<b>${loc.name}</b><br>(${loc.country} miestas)`;
+                const marker = L.marker(loc.coords).bindPopup(popupText);
+                continentLayers[layerName].addLayer(marker);
+            }
+        });
+        
+        // Pagal nutylėjimą miestus rodome
+        Object.values(continentLayers).forEach(layer => layer.addTo(map));
+        
+        // --- VALSTYBIŲ NUSPALVINIMAS ---
+        // Naudojame angliškus pavadinimus, kurie atitinka GeoJSON failo 'ADMIN' ypatybę
+        const highlightCountries = new Set([
+            "Afghanistan", "Albania", "Algeria", "Andorra", "Argentina", "Australia", "Austria", "Bangladesh", "Belarus", "Belgium", "Bosnia and Herzegovina", "Brazil", "Bulgaria", "Canada", "Chad", "Chile", "China", "Colombia", "Croatia", "Cuba", "Cyprus", "Czech Republic", "Democratic Republic of the Congo", "Denmark", "Egypt", "Estonia", "Ethiopia", "Finland", "France", "Georgia", "Germany", "Greece", "Haiti", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kosovo", "Kuwait", "Latvia", "Lebanon", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Madagascar", "Malaysia", "Malta", "Mexico", "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco", "Nepal", "Netherlands", "New Zealand", "Nigeria", "North Korea", "North Macedonia", "Norway", "Oman", "Pakistan", "Panama", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", "San Marino", "Saudi Arabia", "Serbia", "Singapore", "Slovakia", "Slovenia", "Somalia", "South Africa", "South Korea", "South Sudan", "Spain", "Sri Lanka", "Sweden", "Switzerland", "Syria", "Thailand", "Tunisia", "Turkey", "Ukraine", "United Arab Emirates", "United Kingdom", "United States of America", "Vatican City", "Venezuela", "Vietnam", "Yemen"
+        ]);
+
+        let geojsonLayer;
+
+        const highlightedStyle = {
+            fillColor: 'red',
+            weight: 1,
+            opacity: 1,
+            color: 'white',
+            fillOpacity: 1
+        };
+
+        const defaultStyle = {
+            fillOpacity: 0,
+            opacity: 0,
+            interactive: false
+        };
+
+        function onEachFeature(feature, layer) {
+            // Patikriname, ar valstybė yra sąraše
+            if (highlightCountries.has(feature.properties.ADMIN)) {
+                layer.setStyle(highlightedStyle);
+            } else {
+                layer.setStyle(defaultStyle);
+            }
+        }
+
+        const baseLayers = {};
+        const overlayLayers = { ...continentLayers };
+
+        fetch('https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson')
+            .then(response => response.json())
+            .then(data => {
+                geojsonLayer = L.geoJson(data, {
+                    onEachFeature: onEachFeature,
+                    pane: 'highlightPane' // Priskiriame sluoksnį sukurtam pane
+                });
+                
+                overlayLayers["Valstybės"] = geojsonLayer;
+                
+                const layerControl = L.control.layers(baseLayers, overlayLayers, { collapsed: false }).addTo(map);
+
+                const controlContainer = layerControl.getContainer();
+                const titleElement = document.createElement('div');
+                titleElement.className = 'leaflet-control-layers-group-name';
+                titleElement.innerText = 'Ką mokintis?';
+                controlContainer.prepend(titleElement);
+            });
+
+    </script>
+</body>
+</html>
+
