@@ -21,11 +21,11 @@
 
         /* Legendos stilius */
         .legend-control {
-            padding: 10px 15px;
+            padding: 8px 12px;
             background-color: rgba(255, 255, 255, 0.9);
             box-shadow: 0 0 15px rgba(0,0,0,0.2);
             border-radius: 8px;
-            width: 250px;
+            width: 220px; /* Sumažintas plotis */
             max-height: 80vh;
             overflow-y: auto;
         }
@@ -36,13 +36,13 @@
             padding-bottom: 8px;
             margin-top: 0;
             margin-bottom: 10px;
-            font-size: 1.4em;
+            font-size: 1.3em; /* Sumažintas šrifto dydis */
             text-align: center;
         }
 
         .control-group {
-            margin-bottom: 10px;
-            padding-bottom: 10px;
+            margin-bottom: 8px;
+            padding-bottom: 8px;
             border-bottom: 1px solid #e0e0e0;
         }
         .control-group:last-child {
@@ -53,7 +53,7 @@
         
         .control-item {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
             font-size: 1em;
         }
         .control-item:last-child {
@@ -226,7 +226,7 @@
         // Verta Žinoti
         { lat: 52.3676, lng: 4.9041, name: "Amsterdamas", country: "Nyderlandai", type: "info", info: "Inovatyvių urbanistinių ir ekologinių sprendimų pavyzdys." },
         { lat: 55.5260, lng: 25.1060, name: "Anykščiai", country: "Lietuva", type: "info", info: "Istorinis kvarcinio smėlio gavybos centras." },
-        { lat: 43.2565, lng: -2.9236, name: "Bilbao", country: "Ispanija", type: "info", info: "Sėkmingos miesto transformacijos pavyzdys." },
+        { lat: 43.2565, lng: -2.9236, name: "Bilbao", country: "Ispanija", type: "info", info: "Sėmingos miesto transformacijos pavyzdys." },
         { lat: 54.6050, lng: 24.0320, name: "Birštonas", country: "Lietuva", type: "info", info: "Mineralinio vandens ir purvo kurortas." },
         { lat: 51.3896, lng: 30.0993, name: "Černobilis (Pripetė)", country: "Ukraina", type: "info", info: "Didžiausios branduolinės avarijos vieta." },
         { lat: 54.0167, lng: 23.9667, name: "Druskininkai", country: "Lietuva", type: "info", info: "Mineralinio vandens ir purvo kurortas." },
@@ -253,7 +253,7 @@
         { lat: 37.4419, lng: -122.1430, name: "Silicio slėnis", country: "JAV", type: "info", info: "Inovacijų ir technologijų centro pavyzdys." },
         { lat: -22.9885, lng: -43.2452, name: "Favelos (Rocinha)", country: "Brazilija", type: "info", info: "Lušnynų pavyzdys Lotynų Amerikos didmiesčiuose." },
         { lat: -25.4284, lng: -49.2733, name: "Kuritiba", country: "Brazilija", type: "info", info: "Tvaraus miesto planavimo pavyzdys." },
-        { lat: 6.2442, lng: -75.5812, name: "Medeljinas", country: "Kolumbija", type: "info", info: "Sėkmingos socialinės transformacijos pavyzdys." },
+        { lat: 6.2442, lng: -75.5812, name: "Medeljinas", country: "Kolumbija", type: "info", info: "Sėmingos socialinės transformacijos pavyzdys." },
         { lat: 9.0765, lng: 7.3986, name: "Abudža", country: "Nigerija", type: "info", info: "Vienas sparčiausiai augančių miestų ne tik Afrikoje, bet ir visame pasaulyje." },
         { lat: 9.03, lng: 38.74, name: "Adis Abeba", country: "Etiopija", type: "info", info: "Sparčiai augantis miestas, diplomatikos ir transporto mazgas." },
         { lat: 31.2001, lng: 29.9187, name: "Aleksandrija", country: "Egiptas", type: "info", info: "Antrasis pagal gyventojų skaičių ir ekonominę reikšmę istorinis Egipto miestas." },
@@ -263,6 +263,8 @@
         { lat: -8.5188, lng: 179.1983, name: "Funafutis", country: "Tuvalu", type: "info", info: "Klimato kaitos padarinių ir jūros lygio kilimo pavyzdys." },
         { lat: -0.5270, lng: 166.9315, name: "Jarenas", country: "Nauru", type: "info", info: "Fosfatų gavybos padarinių pavyzdys." },
         { lat: 1.3278, lng: 172.9796, name: "Tarava", country: "Kiribatis", type: "info", info: "Klimato kaitos padarinių ir jūros lygio kilimo pavyzdys." },
+        { lat: 31.4167, lng: 34.3333, name: "Gaza (Gazos Ruožas)", country: "Palestina", type: "info", info: "Palestinos autonomijos dalis." },
+        { lat: 32.0819, lng: 35.3283, name: "Vakarų Krantas", country: "Palestina", type: "info", info: "Palestinos autonomijos regionas, apimantis Rytų Jeruzalę." }
     ];
     
     const map = L.map('map', {
@@ -316,47 +318,47 @@
                 <h1>Ką mokytis?</h1>
                 <div class="control-group">
                     <div class="control-item">
-                        <label><input type="checkbox" id="states-cb" checked>Valstybės</label>
+                        <label><input type="checkbox" id="states-cb" >Valstybės</label>
                     </div>
                 </div>
                 <div class="control-group">
                     <div class="control-item">
-                        <label><input type="checkbox" id="lt-cities-cb" checked>Lietuvos miestai</label>
+                        <label><input type="checkbox" id="lt-cities-cb" >Lietuvos miestai</label>
                     </div>
                 </div>
                 <div class="control-group">
                     <div class="control-item">
-                        <label><input type="checkbox" id="eu-cities-cb" checked>Europos miestai</label>
+                        <label><input type="checkbox" id="eu-cities-cb" >Europos miestai</label>
                     </div>
                 </div>
                 <div class="control-group">
                     <div class="control-item">
-                        <label><input type="checkbox" id="as-cities-cb" checked>Azijos miestai</label>
+                        <label><input type="checkbox" id="as-cities-cb" >Azijos miestai</label>
                     </div>
                 </div>
                 <div class="control-group">
                     <div class="control-item">
-                        <label><input type="checkbox" id="na-cities-cb" checked>Š. Amerikos miestai</label>
+                        <label><input type="checkbox" id="na-cities-cb" >Š. Amerikos miestai</label>
                     </div>
                 </div>
                 <div class="control-group">
                     <div class="control-item">
-                        <label><input type="checkbox" id="sa-cities-cb" checked>P. Amerikos miestai</label>
+                        <label><input type="checkbox" id="sa-cities-cb" >P. Amerikos miestai</label>
                     </div>
                 </div>
                 <div class="control-group">
                     <div class="control-item">
-                        <label><input type="checkbox" id="af-cities-cb" checked>Afrikos miestai</label>
+                        <label><input type="checkbox" id="af-cities-cb" >Afrikos miestai</label>
                     </div>
                 </div>
                 <div class="control-group">
                     <div class="control-item">
-                        <label><input type="checkbox" id="au-cities-cb" checked>Australijos ir Okeanijos miestai</label>
+                        <label><input type="checkbox" id="au-cities-cb" >Australijos ir Okeanijos miestai</label>
                     </div>
                 </div>
                 <div class="control-group">
                     <div class="control-item">
-                        <label><input type="checkbox" id="info-cb" checked>Verta žinoti</label>
+                        <label><input type="checkbox" id="info-cb" >Verta žinoti</label>
                     </div>
                 </div>
             `;
@@ -392,7 +394,7 @@
             const countriesToLearnSet = new Set(["Afghanistan", "Algeria", "Argentina", "Australia", "Bangladesh", "Brazil", "Canada", "Chad", "Chile", "China", "Colombia", "Cuba", "Cyprus", "Dem. Rep. Congo", "Egypt", "Ethiopia", "Georgia", "Haiti", "India", "Indonesia", "Iran", "Iraq", "Israel", "Japan", "Kazakhstan", "Kenya", "Kuwait", "Libya", "Madagascar", "Malaysia", "Mexico", "Mongolia", "Morocco", "Nepal", "New Zealand", "Nigeria", "North Korea", "Oman", "Pakistan", "Panama", "Peru", "Philippines", "Qatar", "Russia", "Saudi Arabia", "Singapore", "Somalia", "South Africa", "South Korea", "S. Sudan", "Sri Lanka", "Syria", "Thailand", "Tunisia", "Turkey", "United Arab Emirates", "United States of America", "Venezuela", "Vietnam", "Yemen", "Albania", "Andorra", "Austria", "Belarus", "Belgium", "Bosnia and Herz.", "Bosnia and Herzegovina", "Bulgaria", "Croatia", "Czechia", "Czech Republic", "Denmark", "Estonia", "Finland", "France", "Germany", "Greece", "Hungary", "Iceland", "Ireland", "Italy", "Kosovo", "Latvia", "Liechtenstein", "Lithuania", "Luxembourg", "Malta", "Moldova", "Monaco", "Montenegro", "Netherlands", "Macedonia", "Norway", "Poland", "Portugal", "Romania", "San Marino", "Serbia", "Republic of Serbia", "Slovakia", "Slovenia", "Spain", "Sweden", "Switzerland", "Ukraine", "United Kingdom", "Vatican"]);
             
             // Pridedame lietuviškus pavadinimus į duomenis
-            const countryNamesLT = {"Afghanistan":"Afganistanas","Angola":"Angola","Albania":"Albanija","United Arab Emirates":"Jungtiniai Arabų Emyratai","Argentina":"Argentina","Armenia":"Armėnija","Antarctica":"Antarktida","Fr. S. Antarctic Lands":"Prancūzijos Pietų Sritys","Australia":"Australija","Austria":"Austrija","Azerbaijan":"Azerbaidžanas","Andorra":"Andora","Burundi":"Burundis","Belgium":"Belgija","Benin":"Beninas","Burkina Faso":"Burkina Fasas","Bangladesh":"Bangladešas","Bulgaria":"Bulgarija","Bahamas":"Bahamos","Bosnia and Herz.":"Bosnija ir Hercegovina","Bosnia and Herzegovina":"Bosnija ir Hercegovina","Belarus":"Baltarusija","Belize":"Belizas","Bolivia":"Bolivija","Brazil":"Brazilija","Brunei":"Brunėjus","Bhutan":"Butanas","Botswana":"Botsvana","Central African Rep.":"Centrinės Afrikos Respublika","Canada":"Kanada","Switzerland":"Šveicarija","Chile":"Čilė","China":"Kinija","Côte d'Ivoire":"Dramblio Kaulo Krantas","Cameroon":"Kamerūnas","Dem. Rep. Congo":"Kongo Demokratinė Respublika","Congo":"Kongas","Colombia":"Kolumbija","Costa Rica":"Kosta Rika","Cuba":"Kuba","N. Cyprus":"Šiaurės Kipras","Cyprus":"Kipras","Czechia":"Čekija","Czech Republic":"Čekija","Germany":"Vokietija","Djibouti":"Džibutis","Denmark":"Danija","Dominican Rep.":"Dominikos Respublika","Algeria":"Alžyras","Ecuador":"Ekvadoras","Egypt":"Egiptas","Eritrea":"Eritrėja","Spain":"Ispanija","Estonia":"Estija","Ethiopia":"Etiopija","Finland":"Suomija","Fiji":"Fidžis","Falkland Is.":"Falklando salos","France":"Prancūzija","Gabon":"Gabonas","United Kingdom":"Jungtinė Karalystė","Georgia":"Gruzija","Ghana":"Gana","Guinea":"Gvinėja","Gambia":"Gambija","Guinea-Bissau":"Bisau Gvinėja","Eq. Guinea":"Pusiaujo Gvinėja","Greece":"Graikija","Greenland":"Grenlandija","Guatemala":"Gvatemala","Guyana":"Gajana","Honduras":"Hondūras","Croatia":"Kroatija","Haiti":"Haitis","Hungary":"Vengrija","Indonesia":"Indonezija","India":"Indija","Ireland":"Airija","Iran":"Iranas","Iraq":"Irakas","Iceland":"Islandija","Israel":"Izraelis","Italy":"Italija","Jamaica":"Jamaika","Jordan":"Jordanija","Japan":"Japonija","Kazakhstan":"Kazachstanas","Kenya":"Kenija","Kyrgyzstan":"Kirgizija","Cambodia":"Kambodža","South Korea":"Pietų Korėja","Kosovo":"Kosovas","Kuwait":"Kuveitas","Laos":"Laosas","Lebanon":"Libanas","Liberia":"Liberija","Libya":"Libija","Sri Lanka":"Šri Lanka","Lesotho":"Lesotas","Lithuania":"Lietuva","Luxembourg":"Liuksemburgas","Latvia":"Latvija","Liechtenstein":"Lichtenšteinas","Morocco":"Marokas","Moldova":"Moldova","Madagascar":"Madagaskaras","Mexico":"Meksika","Macedonia":"Šiaurės Makedonija","Mali":"Malis","Malta":"Malta","Myanmar":"Mianmaras","Montenegro":"Juodkalnija","Monaco":"Monakas","Mongolia":"Mongolija","Mozambique":"Mozambikas","Mauritania":"Mauritanija","Malawi":"Malavis","Malaysia":"Malaizija","Namibia":"Namibija","New Caledonia":"Naujoji Kaledonija","Niger":"Nigeris","Nigeria":"Nigerija","Nicaragua":"Nikaragva","Netherlands":"Nyderlandai","Norway":"Norvegija","Nepal":"Nepalas","New Zealand":"Naujoji Zelandija","Oman":"Omanas","Pakistan":"Pakistanas","Panama":"Panama","Peru":"Peru","Philippines":"Filipinai","Papua New Guinea":"Papua Naujoji Gvinėja","Poland":"Lenkija","Puerto Rico":"Puerto Rikas","North Korea":"Šiaurės Korėja","Portugal":"Portugalija","Paraguay":"Paragvajus","Palestine":"Palestina","Qatar":"Kataras","Romania":"Rumunija","Russia":"Rusija","Rwanda":"Ruanda","W. Sahara":"Vakarų Sachara","Saudi Arabia":"Saudo Arabija","Sudan":"Sudanas","S. Sudan":"Pietų Sudanas","Senegal":"Senegalas","Solomon Is.":"Saliamono salos","Sierra Leone":"Siera Leonė","El Salvador":"Salvadoras","San Marino":"San Marinas","Somaliland":"Somalilandas","Somalia":"Somalis","Serbia":"Serbija","Republic of Serbia":"Serbija","Singapore":"Singapūras","Suriname":"Surinamas","Slovakia":"Slovakija","Slovenia":"Slovėnija","Sweden":"Švedija","Swaziland":"Esvatinis","Syria":"Sirija","Chad":"Čadas","Togo":"Togas","Thailand":"Tailandas","Tajikistan":"Tadžikistanas","Turkmenistan":"Turkmėnistanas","Timor-Leste":"Rytų Timoras","Trinidad and Tobago":"Trinidadas ir Tobagas","Tunisia":"Tunisas","Turkey":"Turkija","Taiwan":"Taivanas","Tanzania":"Tanzanija","Uganda":"Uganda","Ukraine":"Ukraina","Uruguay":"Urugvajus","United States of America":"Jungtinės Amerikos Valstijos","Uzbekistan":"Uzbekistanas","Venezuela":"Venesuela","Vietnam":"Vietnamas","Vanuatu":"Vanuatu","Vatican":"Vatikano Miesto Valstybė","Yemen":"Jemenas","South Africa":"Pietų Afrika","Zambia":"Zambija","Zimbabwe":"Zimbabvė"};
+            const countryNamesLT = {"Afghanistan":"Afganistanas","Angola":"Angola","Albania":"Albanija","United Arab Emirates":"Jungtiniai Arabų Emyratai","Argentina":"Argentina","Armenia":"Armėnija","Antarctica":"Antarktida","Fr. S. Antarctic Lands":"Prancūzijos Pietų Sritys","Australia":"Australija","Austria":"Austrija","Azerbaijan":"Azerbaidžanas","Andora":"Andora","Burundi":"Burundis","Belgium":"Belgija","Benin":"Beninas","Burkina Faso":"Burkina Fasas","Bangladesh":"Bangladešas","Bulgaria":"Bulgarija","Bahamas":"Bahamos","Bosnia and Herz.":"Bosnija ir Hercegovina","Bosnia and Herzegovina":"Bosnija ir Hercegovina","Belarus":"Baltarusija","Belize":"Belizas","Bolivia":"Bolivija","Brazil":"Brazilija","Brunei":"Brunėjus","Bhutan":"Butanas","Botswana":"Botsvana","Central African Rep.":"Centrinės Afrikos Respublika","Canada":"Kanada","Switzerland":"Šveicarija","Chile":"Čilė","China":"Kinija","Côte d'Ivoire":"Dramblio Kaulo Krantas","Cameroon":"Kamerūnas","Dem. Rep. Congo":"Kongo Demokratinė Respublika","Congo":"Kongas","Colombia":"Kolumbija","Costa Rica":"Kosta Rika","Cuba":"Kuba","N. Cyprus":"Šiaurės Kipras","Cyprus":"Kipras","Czechia":"Čekija","Czech Republic":"Čekija","Germany":"Vokietija","Djibouti":"Džibutis","Denmark":"Danija","Dominican Rep.":"Dominikos Respublika","Algeria":"Alžyras","Ecuador":"Ekvadoras","Egypt":"Egiptas","Eritrea":"Eritrėja","Spain":"Ispanija","Estonia":"Estija","Ethiopia":"Etiopija","Finland":"Suomija","Fiji":"Fidžis","Falkland Is.":"Falklando salos","France":"Prancūzija","Gabon":"Gabonas","United Kingdom":"Jungtinė Karalystė","Georgia":"Gruzija","Ghana":"Gana","Guinea":"Gvinėja","Gambia":"Gambija","Guinea-Bissau":"Bisau Gvinėja","Eq. Guinea":"Pusiaujo Gvinėja","Greece":"Graikija","Greenland":"Grenlandija","Guatemala":"Gvatemala","Guyana":"Gajana","Honduras":"Hondūras","Croatia":"Kroatija","Haiti":"Haitis","Hungary":"Vengrija","Indonesia":"Indonezija","India":"Indija","Ireland":"Airija","Iran":"Iranas","Iraq":"Irakas","Iceland":"Islandija","Israel":"Izraelis","Italy":"Italija","Jamaica":"Jamaika","Jordan":"Jordanija","Japan":"Japonija","Kazakhstan":"Kazachstanas","Kenya":"Kenija","Kyrgyzstan":"Kirgizija","Cambodia":"Kambodža","South Korea":"Pietų Korėja","Kosovo":"Kosovas","Kuwait":"Kuveitas","Laos":"Laosas","Lebanon":"Libanas","Liberia":"Liberija","Libya":"Libija","Sri Lanka":"Šri Lanka","Lesotho":"Lesotas","Lithuania":"Lietuva","Luxembourg":"Liuksemburgas","Latvia":"Latvija","Liechtenstein":"Lichtenšteinas","Morocco":"Marokas","Moldova":"Moldova","Madagascar":"Madagaskaras","Mexico":"Meksika","Macedonia":"Šiaurės Makedonija","Mali":"Malis","Malta":"Malta","Myanmar":"Mianmaras","Montenegro":"Juodkalnija","Monaco":"Monakas","Mongolia":"Mongolija","Mozambique":"Mozambikas","Mauritania":"Mauritanija","Malawi":"Malavis","Malaysia":"Malaizija","Namibia":"Namibija","New Caledonia":"Naujoji Kaledonija","Niger":"Nigeris","Nigeria":"Nigerija","Nicaragua":"Nikaragva","Netherlands":"Nyderlandai","Norway":"Norvegija","Nepal":"Nepalas","New Zealand":"Naujoji Zelandija","Oman":"Omanas","Pakistan":"Pakistanas","Panama":"Panama","Peru":"Peru","Philippines":"Filipinai","Papua New Guinea":"Papua Naujoji Gvinėja","Poland":"Lenkija","Puerto Rico":"Puerto Rikas","North Korea":"Šiaurės Korėja","Portugal":"Portugalija","Paraguay":"Paragvajus","Palestine":"Palestina","Qatar":"Kataras","Romania":"Rumunija","Russia":"Rusija","Rwanda":"Ruanda","W. Sahara":"Vakarų Sachara","Saudi Arabia":"Saudo Arabija","Sudan":"Sudanas","S. Sudan":"Pietų Sudanas","Senegal":"Senegalas","Solomon Is.":"Saliamono salos","Sierra Leone":"Siera Leonė","El Salvador":"Salvadoras","San Marino":"San Marinas","Somaliland":"Somalilandas","Somalia":"Somalis","Serbia":"Serbija","Republic of Serbia":"Serbija","Singapore":"Singapūras","Suriname":"Surinamas","Slovakia":"Slovakija","Slovenia":"Slovėnija","Sweden":"Švedija","Swaziland":"Esvatinis","Syria":"Sirija","Chad":"Čadas","Togo":"Togas","Thailand":"Tailandas","Tajikistan":"Tadžikistanas","Turkmenistan":"Turkmėnistanas","Timor-Leste":"Rytų Timoras","Trinidad and Tobago":"Trinidadas ir Tobagas","Tunisia":"Tunisas","Turkey":"Turkija","Taiwan":"Taivanas","Tanzania":"Tanzanija","Uganda":"Uganda","Ukraine":"Ukraina","Uruguay":"Urugvajus","United States of America":"Jungtinės Amerikos Valstijos","Uzbekistan":"Uzbekistanas","Venezuela":"Venesuela","Vietnam":"Vietnamas","Vanuatu":"Vanuatu","Vatican":"Vatikano Miesto Valstybė","Yemen":"Jemenas","South Africa":"Pietų Afrika","Zambia":"Zambija","Zimbabwe":"Zimbabvė"};
             data.features.forEach(feature => {
                 const englishName = feature.properties.name;
                 feature.properties.name_lt = countryNamesLT[englishName] || englishName;
@@ -417,12 +419,14 @@
             console.error("Klaida gaunant valstybių duomenis:", error);
         }
     }
-    setupStatesLayer();
     
     // Įvykių klausytojai (turi būti priskirti PO to, kai sukuriamas HTML turinys)
-    map.whenReady(() => {
+    map.whenReady(async () => {
+        // Pirmiausia paruošiame valstybių sluoksnį, kad jis būtų pasiekiamas
+        await setupStatesLayer();
+
         const layerMapping = {
-            'states-cb': 'statesLayer', // Specialus atvejis
+            'states-cb': statesLayer,
             'lt-cities-cb': cityLayers['lt-cities'],
             'eu-cities-cb': cityLayers['eu-cities'],
             'as-cities-cb': cityLayers['as-cities'],
@@ -433,25 +437,16 @@
             'info-cb': cityLayers['info']
         };
 
-        for (const [id, layerOrName] of Object.entries(layerMapping)) {
+        for (const [id, layer] of Object.entries(layerMapping)) {
             const checkbox = document.getElementById(id);
             if (checkbox) {
-                // Pridedame sluoksnį, nes jis pažymėtas pagal nutylėjimą
-                let layer = (id === 'states-cb') ? statesLayer : layerOrName;
-                if (layer) {
-                     // Palaukiam, kol valstybių sluoksnis bus paruoštas
-                    if (id === 'states-cb') {
-                        setupStatesLayer().then(() => {
-                            if (checkbox.checked) map.addLayer(statesLayer);
-                        });
-                    } else {
-                        if (checkbox.checked) map.addLayer(layer);
-                    }
+                // Patikriname pradinę būseną (dabar visada bus nepažymėta)
+                if (checkbox.checked && layer) {
+                    map.addLayer(layer);
                 }
                 
                 // Pridedame įvykio klausytoją
                 checkbox.addEventListener('change', e => {
-                    let layer = (id === 'states-cb') ? statesLayer : layerOrName;
                     if (layer) {
                         e.target.checked ? map.addLayer(layer) : map.removeLayer(layer);
                     }
@@ -463,6 +458,4 @@
     </script>
 </body>
 </html>
-
-
 
