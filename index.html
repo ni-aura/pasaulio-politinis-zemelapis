@@ -259,7 +259,6 @@
         { lat: 31.2001, lng: 29.9187, name: "Aleksandrija", country: "Egiptas", type: "info", info: "Antrasis pagal gyventojų skaičių ir ekonominę reikšmę istorinis Egipto miestas." },
         { lat: -1.3149, lng: 36.7793, name: "Kibera (Nairobis)", country: "Kenija", type: "info", info: "Vienas didžiausių Afrikos lušnynų." },
         { lat: -4.4419, lng: 15.2663, name: "Kinšasa", country: "Kongo DR", type: "info", info: "Vienas sparčiausiai augančių megamiestų pasaulyje." },
-        { lat: 15.3000, lng: -1.5000, name: "Sahelio zona", country: "Afrika", type: "info", info: "Dykumėjimo ir klimato kaitos poveikio regionas." },
         { lat: -8.5188, lng: 179.1983, name: "Funafutis", country: "Tuvalu", type: "info", info: "Klimato kaitos padarinių ir jūros lygio kilimo pavyzdys." },
         { lat: -0.5270, lng: 166.9315, name: "Jarenas", country: "Nauru", type: "info", info: "Fosfatų gavybos padarinių pavyzdys." },
         { lat: 1.3278, lng: 172.9796, name: "Tarava", country: "Kiribatis", type: "info", info: "Klimato kaitos padarinių ir jūros lygio kilimo pavyzdys." },
@@ -267,6 +266,34 @@
         { lat: 32.0819, lng: 35.3283, name: "Vakarų Krantas", country: "Palestina", type: "info", info: "Palestinos autonomijos regionas, apimantis Rytų Jeruzalę." }
     ];
     
+    const polygonData = [
+        {
+            coords: [
+                // Pietinė riba (iš vakarų į rytus)
+                [12.5, -17.0], 
+                [10.0, -12.0], 
+                [10.5, -3.0],  
+                [10.0, 8.0],   
+                [9.0, 18.0],   
+                [9.5, 28.0],   
+                [10.0, 39.0],  
+                // Šiaurinė riba (iš rytų į vakarus)
+                [15.0, 41.0],  
+                [17.5, 30.0],  
+                [19.0, 20.0],  
+                [20.5, 10.0],  
+                [21.0, 0.0],   
+                [21.5, -10.0], 
+                [19.0, -16.5], 
+                [12.5, -17.0]  
+            ],
+            name: "Sachelio zona",
+            country: "Afrika",
+            type: "info",
+            info: "Biogeografiniu požiūriu Sachelis yra pereinamoji zona tarp Sacharos dykumos ir Afrikos savanų, kurioje dėl žmogaus poveikio ir klimato kaitos vyksta spartus dykumėjimo procesas.<br><br><b>Geopolitiniai aspektai:</b><ul style='text-align: left; margin-top: 5px; padding-left: 18px; font-size: 0.9em;'><li>Nestabilumas ir kariniai perversmai.</li><li>Teroristinių grupuočių (Al-Qaeda, ISIS) veikla.</li><li>Etniniai konfliktai dėl išteklių.</li><li>Skurdas, skatinantis jungtis prie ginkluotų grupuočių.</li></ul>"
+        }
+    ];
+
     const map = L.map('map', {
         center: [45, 20],
         zoom: 3,
@@ -275,7 +302,7 @@
 
     // Sukuriame atskirą sritį (pane) valstybių sluoksniui, kad jis būtų po miestais
     map.createPane('statesPane');
-    map.getPane('statesPane').style.zIndex = 250; // Numatytasis žymeklių zIndex yra 600
+    map.getPane('statesPane').style.zIndex = 250; 
 
     // Pridedame priartinimo valdymą kitoje pozicijoje
     L.control.zoom({ position: 'topleft' }).addTo(map);
@@ -383,6 +410,20 @@
         marker.bindPopup(createPopupContent(city));
         if(cityLayers[city.type]) {
             cityLayers[city.type].addLayer(marker);
+        }
+    });
+
+    polygonData.forEach(poly => {
+        const polygon = L.polygon(poly.coords, {
+            fillColor: "#e63946",
+            color: "#000",
+            weight: 1.5,
+            opacity: 1,
+            fillOpacity: 0.5
+        });
+        polygon.bindPopup(createPopupContent(poly));
+        if(cityLayers[poly.type]) {
+            cityLayers[poly.type].addLayer(polygon);
         }
     });
 
